@@ -1,0 +1,49 @@
+{% extends "software_base.html" %}
+{% block title %}Update Business{% endblock title %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    
+</style>
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="alert alert-warning text-center mt-2">
+            <h2>Update Visitor </h2>
+        </div>
+        <div class="container-fluid mb-3 form-header p-3">
+            <div class="row p-1 rounded">
+                <div class="col-sm-12">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                         <div class="row"> 
+                      
+                        <div class="col-sm-6">
+                            {{ form.customer|as_crispy_field }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form.visit_date|as_crispy_field }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form.total_charges|as_crispy_field }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form.paid_charges|as_crispy_field }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form.next_due_date|as_crispy_field }}
+                        </div> 
+                        <div class="col-sm-12">
+                            {{ form.remarks|as_crispy_field }}
+                        </div>
+                        
+                    </div>
+                        <center><button type="submit" class="btn btn-primary mt-1 px-5">Update</button></center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+
+{% endblock content %}
