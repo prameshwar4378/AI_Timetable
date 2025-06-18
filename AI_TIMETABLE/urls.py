@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from BackendApp import urls as backend_urls
+from Backend import urls as backend_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('software/', include(backend_urls)),
+    path('dumm__data', backend_urls.add_dummy_data, name='add_dummy_data'),
 
 ]

@@ -14037,7 +14037,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{user.first_name}} {{user.last_name}}</h6>
-                        <span>Business Owner </span>
+                        <span>User </span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -14066,38 +14066,45 @@
                 <span>Dashboard</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" href="{% url 'teacher_list' %}">
                 <i class="bi bi-person-lines-fill"></i>
                 <span>Teachers</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" href="{% url 'subject_list' %}">
-                <i class="bi bi-journal-bookmark-fill"></i>
+                <i class="bi bi-book"></i>
                 <span>Subjects</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" href="{% url 'class_list' %}">
                 <i class="bi bi-building"></i>
                 <span>Classes</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" href="{% url 'timetable_view' %}">
-                <i class="bi bi-calendar-week"></i>
+                <i class="bi bi-calendar3"></i>
                 <span>Timetable</span>
             </a>
         </li>
+ 
+
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'adjustment_today' %}">
-                <i class="bi bi-shuffle"></i>
-                <span>Today's Adjustments</span>
+            <a class="nav-link" href="">
+                <i class="bi bi-clock"></i>
+                <span>Break Assignment</span>
             </a>
         </li>
     </ul>
-</aside>
+</aside><!-- End Sidebar-->
+
 
 
 
@@ -14117,7 +14124,7 @@
           <h5>Are you sure to Sign Out <b>"{{user.username}}"</b></h5>
         </div>
         <div class="modal-footer">
-          <a href="{% url "logout" %}" class="btn btn-danger px-3 ">Yes</a> &nbsp;
+          <a href=" " class="btn btn-danger px-3 ">Yes</a> &nbsp;
           <button  type="button" class="btn btn-secondary bgcolor px-3" data-dismiss="modal">No</button>
         </div>
       </div>

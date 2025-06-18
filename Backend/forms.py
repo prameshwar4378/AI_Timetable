@@ -14,7 +14,7 @@ class SubjectForm(forms.ModelForm):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['name', 'email', 'phone', 'is_class_teacher', 'capable_upto_class']
+        fields = ['name', 'email', 'phone',  'capable_classes_for_proxy']
 
 
 class ClassRoomForm(forms.ModelForm):
@@ -32,13 +32,32 @@ class TeacherSubjectClassAssignmentForm(forms.ModelForm):
 class DailyLectureTimingForm(forms.ModelForm):
     class Meta:
         model = DailyLectureTiming
-        fields = ['day', 'lecture_number', 'start_time', 'end_time']
+        fields = ['time_slot', 'lecture_number']
 
-
+ 
 class BreakClassAssignmentForm(forms.ModelForm):
     class Meta:
         model = BreakClassAssignment
-        fields = ['lecture_timing', 'classroom']
+        fields = ['lecture_timing', 'break_type', 'min_grade', 'max_grade']
+
+    auto_assign = forms.BooleanField(
+        required=False,
+        help_text="Auto-select classrooms from min to max grade."
+    )
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if self.cleaned_data.get('auto_assign'):
+            qs = ClassRoom.objects.all()
+            if instance.min_grade is not None and instance.max_grade is not None:
+                qs = qs.filter(grade__gte=instance.min_grade, grade__lte=instance.max_grade)
+                if commit:
+                    instance.save()
+                    instance.classrooms.set(qs)
+        if commit:
+            instance.save()
+        return instance
+
 
 
 class LectureScheduleForm(forms.ModelForm):

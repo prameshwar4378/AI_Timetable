@@ -1,5 +1,5 @@
 from django.urls import path
-from BackendApp.views import *
+from .views import *
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
@@ -8,6 +8,7 @@ urlpatterns = [
     path('classes/', class_list, name='class_list'),
     path('timetable/', timetable_view, name='timetable_view'),
     path('adjustment/', adjustment_today, name='adjustment_today'),
+    path('break_assignment/', break_assignment, name='break_assignment'),
     path('add_dummy_data/', add_dummy_data, name='add_dummy_data'),
 
     

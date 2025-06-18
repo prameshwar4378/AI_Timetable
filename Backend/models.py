@@ -60,6 +60,7 @@ DAYS_OF_WEEK = [
 
 class DailyTimingSlots(models.Model):
     day = models.CharField(choices=DAYS_OF_WEEK, max_length=10)
+    lecture_number = models.PositiveIntegerField(help_text="Lecture slot number (e.g., 1st period = 1)")
     start_time = models.TimeField()
     end_time = models.TimeField()
 
@@ -68,26 +69,31 @@ class DailyTimingSlots(models.Model):
         ordering = ['day', 'lecture_number']
 
     def __str__(self):
-        return f"{self.day} - ({self.start_time} to {self.end_time})"
-
+        return f"{self.day} - Lecture {self.lecture_number} ({self.start_time} to {self.end_time})"
 
 class DailyLectureTiming(models.Model):
-    lecture_number = models.PositiveIntegerField() 
-    time_slot=models.ForeignKey(DailyTimingSlots, on_delete=models.CASCADE)
+    lecture_number = models.CharField(max_length=5)  # e.g. "1", "2", "3", "L"
+    lecture_name = models.CharField(max_length=50)   # e.g. "1st Period", "Lunch Break"
+    time_slot = models.ForeignKey(DailyTimingSlots, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.time_slot.day} - Lecture {self.lecture_number} ({self.time_slot.start_time} to {self.time_slot.end_time})"
+        return f"{self.time_slot.day} - {self.lecture_name} ({self.time_slot.start_time} to {self.time_slot.end_time})"
+
 
 
 class BreakClassAssignment(models.Model):
     lecture_timing = models.ForeignKey(DailyLectureTiming, on_delete=models.CASCADE)
-    classroom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('lecture_timing', 'classroom')
+    classrooms = models.ManyToManyField(ClassRoom)
+    
+    # New fields for dynamic config
+    break_type = models.CharField(max_length=50, default="Lunch Break")  # e.g. Lunch Break, Short Recess
+    min_grade = models.PositiveIntegerField(null=True, blank=True)
+    max_grade = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.classroom} has break during {self.lecture_timing}"
+        return f"{self.break_type} during {self.lecture_timing} for Grades {self.min_grade}-{self.max_grade}"
+
+
 
 # ------------------------------
 # 3. Timetable & Lecture Slots
@@ -147,6 +153,7 @@ class Institute(models.Model):
     address = models.TextField()
     contact_email = models.EmailField()
     logo = models.ImageField(upload_to="institute_logos/", blank=True, null=True)
+    log1 = models.ImageField(upload_to="institute_logos/", blank=True, null=True)
 
     def __str__(self):
         return self.name

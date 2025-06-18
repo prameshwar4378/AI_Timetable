@@ -1,0 +1,51 @@
+{% extends 'software_base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<style>
+
+</style>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Manage Break</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Manage Break</a></li>
+            </ol>
+        </nav>
+        {% comment %} <a href="{% url 'new_admission' %}" class="btn btn-primary text-light"
+            style="position: relative; left:70%; top:-50px;"><b> New Admission</b></a> {% endcomment %}
+
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8" style="background:white;  border-radius:10px; box-shadow:0px 0px 10px -5px;">
+                        <br>
+                        <form action="" method="post" style="padding:20px;">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <center>
+                                <input type="submit" value="Update" class="btn btn-primary px-5">
+                            </center>
+                        </form>
+                    </div>
+                    <div class="col-sm-2"></div>
+
+                </div>
+                 
+
+            </div>
+        </div><!-- End Left side columns -->
+    </section>
+
+</main><!-- End #main -->
+
+
+{% endblock content %}
