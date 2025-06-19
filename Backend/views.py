@@ -46,6 +46,9 @@ from django.shortcuts import render, redirect
 from .forms import BreakClassAssignmentForm
 
 def break_assignment(request):
+    data= BreakClassAssignment.objects.all() 
+    for i in data:
+        print(f'the {i.classrooms}' 'are assigned to {i.subject}')
     if request.method == "POST":
         form = BreakClassAssignmentForm(request.POST)
         if form.is_valid():
@@ -54,7 +57,7 @@ def break_assignment(request):
     else:
         form = BreakClassAssignmentForm()
 
-    return render(request, 'assign_break.html', {'form': form})
+    return render(request, 'assign_break.html', {'form': form, 'data': data})
 
 
 def add_dummy_data(request):

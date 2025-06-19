@@ -84,7 +84,6 @@ class DailyLectureTiming(models.Model):
 class BreakClassAssignment(models.Model):
     lecture_timing = models.ForeignKey(DailyLectureTiming, on_delete=models.CASCADE)
     classrooms = models.ManyToManyField(ClassRoom)
-    
     # New fields for dynamic config
     break_type = models.CharField(max_length=50, default="Lunch Break")  # e.g. Lunch Break, Short Recess
     min_grade = models.PositiveIntegerField(null=True, blank=True)

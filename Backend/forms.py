@@ -1,9 +1,5 @@
 from django import forms
-from .models import (
-    Subject, Teacher, ClassRoom, TeacherSubjectClassAssignment,
-    DailyLectureTiming, BreakClassAssignment, LectureSchedule,
-    TeacherLeave, ProxyAssignment, Institute
-)
+from .models import *
 
 class SubjectForm(forms.ModelForm):
     class Meta:
@@ -34,29 +30,43 @@ class DailyLectureTimingForm(forms.ModelForm):
         model = DailyLectureTiming
         fields = ['time_slot', 'lecture_number']
 
- 
 class BreakClassAssignmentForm(forms.ModelForm):
+    repeat_weekdays = forms.BooleanField(
+        required=False,
+        help_text="Repeat this break Monday to Friday (same slot, same classrooms)"
+    )
+
     class Meta:
         model = BreakClassAssignment
-        fields = ['lecture_timing', 'break_type', 'min_grade', 'max_grade']
-
-    auto_assign = forms.BooleanField(
-        required=False,
-        help_text="Auto-select classrooms from min to max grade."
-    )
+        fields = ['lecture_timing', 'classrooms', 'break_type']
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        if self.cleaned_data.get('auto_assign'):
-            qs = ClassRoom.objects.all()
-            if instance.min_grade is not None and instance.max_grade is not None:
-                qs = qs.filter(grade__gte=instance.min_grade, grade__lte=instance.max_grade)
-                if commit:
-                    instance.save()
-                    instance.classrooms.set(qs)
+
         if commit:
             instance.save()
+            self.save_m2m()
+
+        if self.cleaned_data.get('repeat_weekdays'):
+            original_slot = instance.lecture_timing.time_slot
+            # Fetch all time slots on same lecture_number but different days
+            repeat_slots = DailyTimingSlots.objects.filter(
+                lecture_number=original_slot.lecture_number
+            ).exclude(day=original_slot.day)
+
+            for slot in repeat_slots:
+                try:
+                    timing = DailyLectureTiming.objects.get(time_slot=slot)
+                    new_break = BreakClassAssignment.objects.create(
+                        lecture_timing=timing,
+                        break_type=instance.break_type
+                    )
+                    new_break.classrooms.set(instance.classrooms.all())
+                except DailyLectureTiming.DoesNotExist:
+                    continue
+
         return instance
+
 
 
 

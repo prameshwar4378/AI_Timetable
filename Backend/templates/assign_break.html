@@ -43,6 +43,63 @@
 
             </div>
         </div><!-- End Left side columns -->
+
+        <div class="row">
+
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div style="padding:2%">
+                    <!-- Left side columns -->
+                    <div>
+                         <div class="" style="overflow:scroll;">
+                            <table id="example" class="table table-striped" style="overflow:scroll; width:100%; min-width: max-content;">
+                            <thead>
+                                <tr style="background:#02B4C3;">
+                                    <th scope="col" class="text-center text-white">Sr.No</th>
+                                    <th scope="col" class="text-center text-white">Day</th>
+                                    <th scope="col" class="text-center text-white">Time Slot</th>
+                                    <th scope="col" class="text-center text-white">Lecture Slot</th>
+                                    <th scope="col" class="text-center text-white">Break Type</th>
+                                    <th scope="col" class="text-center text-white">Classrooms</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if data %}
+                                {% for r in data %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td class="text-center">{{ r.lecture_timing.time_slot.day }}</td>
+                                    <td class="text-center">
+                                        {{ r.lecture_timing.time_slot.start_time|time:"H:i" }} -
+                                        {{ r.lecture_timing.time_slot.end_time|time:"H:i" }}
+                                    </td>
+                                    <td class="text-center">{{ r.lecture_timing.lecture_name }}</td>
+                                    <td class="text-center">{{ r.break_type }}</td>
+                                    <td class="text-center">
+                                        {% for c in r.classrooms.all %}
+                                            {{ c.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No data available</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+                        </div>
+
+                    </div>
+                </div><!-- End Left side columns -->
+
+
+            </div>
+        </div><!-- End Left side columns -->
+
+
     </section>
 
 </main><!-- End #main -->
