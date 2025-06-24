@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('software/', include(backend_urls)),
     path('dumm__data', backend_urls.add_dummy_data, name='add_dummy_data'),
+    path('fake_generate_school_timetable', backend_urls.generate_timetable_view, name='fake_generate_school_timetable'),
+    path('generate-timetable/', backend_urls.generate_timetable_view, name='generate_timetable'),
 
 ]

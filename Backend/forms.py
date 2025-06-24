@@ -73,7 +73,7 @@ class BreakClassAssignmentForm(forms.ModelForm):
 class LectureScheduleForm(forms.ModelForm):
     class Meta:
         model = LectureSchedule
-        fields = ['date', 'day', 'lecture_timing', 'classroom', 'subject', 'teacher']
+        fields = ['day', 'lecture_timing', 'classroom', 'subject', 'teacher']
 
 
 class TeacherLeaveForm(forms.ModelForm):

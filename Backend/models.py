@@ -99,7 +99,6 @@ class BreakClassAssignment(models.Model):
 # ------------------------------
 
 class LectureSchedule(models.Model):
-    date = models.DateField()
     day = models.CharField(choices=DAYS_OF_WEEK, max_length=10)
     lecture_timing = models.ForeignKey(DailyLectureTiming, on_delete=models.CASCADE)
     classroom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
@@ -107,11 +106,11 @@ class LectureSchedule(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('date', 'lecture_timing', 'classroom')
-        ordering = ['date', 'lecture_timing__lecture_number']
+        unique_together = ('day', 'lecture_timing', 'classroom')
+        ordering = ['day', 'lecture_timing__lecture_number']
 
     def __str__(self):
-        return f"{self.date} {self.classroom} - {self.subject} ({self.teacher})"
+        return f"{self.day} {self.classroom} - {self.subject} ({self.teacher})"
 
 # ------------------------------
 # 4. Leave & Proxy Management
